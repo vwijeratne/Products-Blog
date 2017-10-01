@@ -1,0 +1,24 @@
+﻿@model ProductBlog.Models.Product
+
+@{
+    ViewBag.Title = "Product Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <img src="@Url.Action("GetThumbnailImage", "Products", new { Model.ProductID })" alt="Thumbnail" /> <br />
+    Product ID : @Html.DisplayFor(item => Model.ProductID) <br/>
+    Product Name : @Html.DisplayFor(item => Model.ProductName) <br />
+    Product SKU : @Html.DisplayFor(item => Model.SKU) <br />
+    Product Price : @Html.DisplayFor(item => Model.Price)
+    <dl class="dl-horizontal">
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProductID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

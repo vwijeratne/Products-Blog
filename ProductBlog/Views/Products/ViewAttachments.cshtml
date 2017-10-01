@@ -1,0 +1,21 @@
+﻿@model List<System.IO.FileInfo>
+
+@{
+    ViewBag.Title = "ViewAttachments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ViewAttachments</h2>
+
+<div>
+    <hr />
+    @foreach (var item in Model)
+    {
+        @Html.ActionLink(item.Name, "Edit", new { id = item.Name })
+    }
+    <dl class="dl-horizontal"></dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
+

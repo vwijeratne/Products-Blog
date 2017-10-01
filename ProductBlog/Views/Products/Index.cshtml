@@ -1,0 +1,62 @@
+﻿@model PagedList.IPagedList< ProductBlog.Models.Product>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Products List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Products List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm("DeleteConfirmed", "Products", new { @class = "form-horizontal", role = "form" }))
+{ 
+<table class="table">
+    <tr>
+        <th></th>
+        <th>Image</th>
+        <th>Product ID</th>
+        <th>@Html.ActionLink("Product Name", "Index", new { sortOrder = ViewBag.ProductnameSortParm })</th>
+        <th>@Html.ActionLink("Product SKU", "Index", new { sortOrder = ViewBag.ProductSKUSortParm })</th>
+        <th>@Html.ActionLink("Product Price", "Index", new { sortOrder = ViewBag.ProductPriceSortParm })</th>  
+        <th>Attachments</th>
+</tr>
+
+    @foreach (var item in Model) {
+    <tr>
+        <td><input type="checkbox" name="ProductChk" value="@(item.ProductID)" /></td>
+        <td><img src="@Url.Action("GetThumbnailImage", "Products", new { item.ProductID })" alt="Thumbnail" /></td>
+        <td>@Html.DisplayFor(modelItem => item.ProductID)</td>
+        <td>@Html.ActionLink("Product Name", "Edit", new { id = item.ProductID })</td>
+        <td>@Html.DisplayFor(modelItem => item.SKU)</td>
+        <td>@Html.DisplayFor(modelItem => item.Price)</td>
+        <td>
+            @if (item.AttachmentsAvailable)
+            {
+                <a href="@Url.Action("ViewAttachments","Products", new { productId = item.ProductID })" id="@item.ProductID">
+                    <img src="@Url.Content("~/Images/attachment-tool-ios-7-interface-symbol_318-35539.jpg")" />
+                </a>
+                @*<img src="~/Images/attachment-tool-ios-7-interface-symbol_318-35539.jpg" alt="Attachment" />*@
+            }
+        </td>
+        @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ProductID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ProductID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ProductID })
+        </td>*@
+    </tr>
+}
+
+</table>
+
+<input style="float:right" id="Login" type="submit" value="Delete">
+    <br />
+}
+<br /><br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort }))
